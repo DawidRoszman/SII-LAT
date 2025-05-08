@@ -35,7 +35,7 @@ public class FundraisingEvent {
 
     public static FundraisingEvent from(
             FundraisingEventCreateRequestDto fundraisingEventCreateRequestDto) {
-        Currency currency = Currency.getInstance(fundraisingEventCreateRequestDto.currencyCode());
+        Currency currency = fundraisingEventCreateRequestDto.currency().getCurrency();
         return new FundraisingEvent(
                 fundraisingEventCreateRequestDto.name(),
                 currency,

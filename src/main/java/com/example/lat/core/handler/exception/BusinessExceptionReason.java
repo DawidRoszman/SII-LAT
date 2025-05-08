@@ -10,7 +10,13 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum BusinessExceptionReason implements BusinessExceptionPolicy {
-    TEST("", HttpStatus.BAD_REQUEST, null);
+    COLLECTION_BOX_NOT_FOUND("Could not find collection box", HttpStatus.NOT_FOUND, null),
+    FUNDRAISER_EVENT_NOT_FOUND("Could not find fundraiser event", HttpStatus.NOT_FOUND, null),
+    DONATION_CURRENCY_NOT_ASSOCIATED_WITH_BOX(
+            "Could not find donation currency associated with the box", HttpStatus.NOT_FOUND, null),
+    BOX_NOT_CONNECTED_WITH_FUNDRAISER_EVENT(
+            "Box is not connected with fundraiser event", HttpStatus.BAD_REQUEST, null),
+    ;
 
     private final String code = name();
     private final String message;

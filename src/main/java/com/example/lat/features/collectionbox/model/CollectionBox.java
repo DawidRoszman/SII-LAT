@@ -11,17 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class CollectionBox {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
+    private UUID id;
 
-    @ManyToOne FundraisingEvent fundraisingEvent;
+    @ManyToOne private FundraisingEvent fundraisingEvent;
 
-    @OneToMany List<DonationCurrency> donations = new ArrayList<>();
+    @OneToMany private List<DonationCurrency> donations = new ArrayList<>();
+
+    public void addCurrencyDonation(DonationCurrency savedDonationCurrency) {
+        this.donations.add(savedDonationCurrency);
+    }
 }
