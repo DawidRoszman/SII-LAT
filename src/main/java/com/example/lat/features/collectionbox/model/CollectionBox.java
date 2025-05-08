@@ -7,23 +7,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 public class CollectionBox {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @ManyToOne
-    FundraisingEvent fundraisingEvent;
+    @ManyToOne FundraisingEvent fundraisingEvent;
 
-    @OneToMany
-    List<DonationCurrency> donations;
-
+    @OneToMany List<DonationCurrency> donations;
 }
