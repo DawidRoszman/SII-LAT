@@ -32,12 +32,14 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
     public CollectionBox registerCollectionBox(
             CollectionBoxCreateRequestDto collectionBoxCreateRequestDto) {
         CollectionBox collectionBox = new CollectionBox();
-        if (collectionBoxCreateRequestDto.fundraiserEventId().isPresent()) {
-            FundraisingEvent fundraisingEvent =
-                    fundraisingEventService.getFundraisingEvent(
-                            collectionBoxCreateRequestDto.fundraiserEventId().get());
-            collectionBox.setFundraisingEvent(fundraisingEvent);
-        }
+        collectionBoxCreateRequestDto
+                .fundraiserEventId()
+                .ifPresent(
+                        fundraiserId -> {
+                            FundraisingEvent fundraisingEvent =
+                                    fundraisingEventService.getFundraisingEvent(fundraiserId);
+                            collectionBox.setFundraisingEvent(fundraisingEvent);
+                        });
         for (AllowedCurrency currency : collectionBoxCreateRequestDto.currencies()) {
             DonationCurrency donationCurrency =
                     new DonationCurrency(currency.getCurrency(), new BigDecimal("0"));
