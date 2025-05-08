@@ -42,4 +42,8 @@ public class FundraisingEvent {
                 // I assumed that when creating fundraising event the amount is 0
                 new BigDecimal("0"));
     }
+
+    public void addMoney(BigDecimal sumOfDonations) {
+        accountAmount = accountAmount.add(sumOfDonations);
+    }
 }

@@ -16,6 +16,7 @@ public enum BusinessExceptionReason implements BusinessExceptionPolicy {
             "Could not find donation currency associated with the box", HttpStatus.NOT_FOUND, null),
     BOX_NOT_CONNECTED_WITH_FUNDRAISER_EVENT(
             "Box is not connected with fundraiser event", HttpStatus.BAD_REQUEST, null),
+    RATES_NOT_FOUND("Could not find rates", HttpStatus.NOT_FOUND, null),
     ;
 
     private final String code = name();

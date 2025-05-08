@@ -8,11 +8,13 @@ import com.example.lat.features.collectionbox.model.CollectionBox;
 import com.example.lat.features.collectionbox.model.DonationCurrency;
 import com.example.lat.features.collectionbox.repository.CollectionBoxRepository;
 import com.example.lat.features.collectionbox.repository.DonationCurrencyRepository;
+import com.example.lat.features.currencyconverter.CurrencyConverter;
 import com.example.lat.features.fundraisingevent.model.FundraisingEvent;
 import com.example.lat.features.fundraisingevent.service.FundraisingEventService;
 import com.example.lat.shared.enums.AllowedCurrency;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +99,7 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
         }
     }
 
+    @Transactional
     @Override
     public void transferMoneyFromCollectionBox(UUID collectionBoxId) {
         CollectionBox collectionBox = getCollectionBox(collectionBoxId);
@@ -105,7 +108,23 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
             throw new BusinessException(
                     BusinessExceptionReason.BOX_NOT_CONNECTED_WITH_FUNDRAISER_EVENT);
         }
-        // Convert to Fundraiser event currency
+        CurrencyConverter currencyConverter = new CurrencyConverter();
+        List<BigDecimal> donationInFundraisingEventCurrency =
+                collectionBox.getDonations().stream()
+                        .map(
+                                donation ->
+                                        currencyConverter.convert(
+                                                donation.getCurrency(),
+                                                fundraisingEvent.getAccountCurrency(),
+                                                donation.getAmount()))
+                        .toList();
+
+        BigDecimal sumOfDonations =
+                donationInFundraisingEventCurrency.stream()
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        fundraisingEvent.addMoney(sumOfDonations);
+        collectionBox.getDonations().forEach(donation -> donation.setAmount(BigDecimal.ZERO));
     }
 
     private CollectionBox getCollectionBox(UUID collectionBoxId) {
