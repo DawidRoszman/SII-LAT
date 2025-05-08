@@ -4,6 +4,8 @@ import com.example.lat.features.fundraisingevent.dto.FundraisingEventCreateReque
 import com.example.lat.features.fundraisingevent.model.FundraisingEvent;
 import com.example.lat.features.fundraisingevent.repository.FundraisingEventRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,5 +18,10 @@ public class FundraisingEventServiceInMemory implements FundraisingEventService 
             FundraisingEventCreateRequestDto fundraisingEventCreateRequestDto) {
         FundraisingEvent fundraisingEvent = FundraisingEvent.from(fundraisingEventCreateRequestDto);
         return fundraisingEventRepository.save(fundraisingEvent);
+    }
+
+    @Override
+    public Page<FundraisingEvent> getFundraisingEvents(Pageable pageable) {
+        return fundraisingEventRepository.findAll(pageable);
     }
 }

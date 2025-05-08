@@ -22,6 +22,8 @@ public class FundraisingEvent {
     private UUID id;
 
     private String name;
+    // The variables with prefix "account" could be separated to another entity but the task stated
+    // to keep it simple
     private BigDecimal accountAmount;
     private Currency accountCurrency;
 

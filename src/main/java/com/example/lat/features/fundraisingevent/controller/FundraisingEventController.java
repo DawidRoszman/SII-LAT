@@ -7,6 +7,11 @@ import com.example.lat.features.fundraisingevent.service.FundraisingEventService
 import com.example.lat.shared.dto.ResponseDto;
 import com.example.lat.shared.enums.SuccessCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +34,17 @@ public class FundraisingEventController {
                 SuccessCode.RESOURCE_CREATED,
                 "Successfully created fundraising event",
                 fundraisingEventResponseDto);
+    }
+
+    @GetMapping
+    public ResponseDto<Page<FundraisingEventResponseDto>> getFundraisingEvent(
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 10, page = 0)
+                    Pageable pageable) {
+        Page<FundraisingEvent> fundraisingEvents =
+                fundraisingEventService.getFundraisingEvents(pageable);
+        return new ResponseDto<>(
+                SuccessCode.RESPONSE_SUCCESSFUL,
+                "Successfully fetched fundraising events",
+                fundraisingEvents.map(FundraisingEventResponseDto::from));
     }
 }
