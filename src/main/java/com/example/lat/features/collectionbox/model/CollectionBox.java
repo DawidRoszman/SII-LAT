@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
@@ -22,5 +23,5 @@ public class CollectionBox {
 
     @ManyToOne FundraisingEvent fundraisingEvent;
 
-    @OneToMany List<DonationCurrency> donations;
+    @OneToMany List<DonationCurrency> donations = new ArrayList<>();
 }
