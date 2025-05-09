@@ -73,6 +73,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("com.google.code.gson:gson:2.7")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("com.h2database:h2")

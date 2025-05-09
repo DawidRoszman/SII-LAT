@@ -2,30 +2,29 @@ package com.example.lat.features.currencyconverter;
 
 import com.example.lat.core.handler.exception.BusinessException;
 import com.example.lat.core.handler.exception.BusinessExceptionReason;
-import com.example.lat.shared.enums.AllowedCurrency;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
+@Data
 public class CurrencyConverter {
-    private final Map<Currency, BigDecimal> rates = new HashMap<>();
+    private final Map<String, Double> rates = new HashMap<>();
 
-    public CurrencyConverter() {
-        rates.put(AllowedCurrency.GBP.getCurrency(), BigDecimal.valueOf(0.75));
-        rates.put(AllowedCurrency.USD.getCurrency(), BigDecimal.valueOf(1.0));
-        rates.put(AllowedCurrency.PLN.getCurrency(), BigDecimal.valueOf(3.77));
-        rates.put(AllowedCurrency.EUR.getCurrency(), BigDecimal.valueOf(0.89));
-    }
+    public CurrencyConverter() {}
 
     public BigDecimal convert(Currency from, Currency to, BigDecimal amount) {
-        if (!rates.containsKey(from) || !rates.containsKey(to)) {
+        if (!rates.containsKey(from.getCurrencyCode())
+                || !rates.containsKey(to.getCurrencyCode())) {
             throw new BusinessException(BusinessExceptionReason.RATES_NOT_FOUND);
         }
+        BigDecimal fromDecimal = BigDecimal.valueOf(rates.get(from.getCurrencyCode()));
+        BigDecimal toDecimal = BigDecimal.valueOf(rates.get(to.getCurrencyCode()));
 
-        BigDecimal amountInUSD = amount.divide(rates.get(from), 4, RoundingMode.HALF_UP);
-        BigDecimal result = amountInUSD.multiply(rates.get(to));
+        BigDecimal amountInUSD = amount.divide(fromDecimal, 4, RoundingMode.HALF_UP);
+        BigDecimal result = amountInUSD.multiply(toDecimal);
         return result.setScale(2, RoundingMode.HALF_UP);
     }
 }

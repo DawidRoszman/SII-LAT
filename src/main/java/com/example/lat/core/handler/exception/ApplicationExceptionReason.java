@@ -8,7 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ApplicationExceptionReason implements ApplicationExceptionPolicy {
     BEAN_PROPERTY_NOT_EXISTS("Property '%s' for object '%s' doesn't exists"),
-    NO_WRITERS_FOUND("No writers found for WebP");
+    FAILED_TO_FETCH_RATES("Failed to fetch rates"),
+    ;
 
     private final String code = name();
     private final String message;

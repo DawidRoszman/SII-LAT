@@ -8,7 +8,7 @@ import com.example.lat.features.collectionbox.model.CollectionBox;
 import com.example.lat.features.collectionbox.model.DonationCurrency;
 import com.example.lat.features.collectionbox.repository.CollectionBoxRepository;
 import com.example.lat.features.collectionbox.repository.DonationCurrencyRepository;
-import com.example.lat.features.currencyconverter.CurrencyConverter;
+import com.example.lat.features.currencyconverter.CurrencyConverterService;
 import com.example.lat.features.fundraisingevent.model.FundraisingEvent;
 import com.example.lat.features.fundraisingevent.service.FundraisingEventService;
 import com.example.lat.shared.enums.AllowedCurrency;
@@ -28,6 +28,7 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
     private final FundraisingEventService fundraisingEventService;
     private final CollectionBoxRepository collectionBoxRepository;
     private final DonationCurrencyRepository donationCurrencyRepository;
+    private final CurrencyConverterService currencyConverterService;
 
     @Transactional
     @Override
@@ -117,12 +118,11 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
             throw new BusinessException(
                     BusinessExceptionReason.BOX_NOT_CONNECTED_WITH_FUNDRAISER_EVENT);
         }
-        CurrencyConverter currencyConverter = new CurrencyConverter();
         List<BigDecimal> donationInFundraisingEventCurrency =
                 collectionBox.getDonations().stream()
                         .map(
                                 donation ->
-                                        currencyConverter.convert(
+                                        currencyConverterService.convert(
                                                 donation.getCurrency(),
                                                 fundraisingEvent.getAccountCurrency(),
                                                 donation.getAmount()))
