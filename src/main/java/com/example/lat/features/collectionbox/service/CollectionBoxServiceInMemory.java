@@ -71,6 +71,9 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
     @Transactional
     public CollectionBox assingCollectionBox(UUID collectionBoxId, UUID fundraiserEventId) {
         CollectionBox collectionBox = getCollectionBox(collectionBoxId);
+        if (collectionBox.getFundraisingEvent() != null) {
+            throw new BusinessException(BusinessExceptionReason.COLLECTION_BOX_ALREADY_ASSIGNED);
+        }
         FundraisingEvent fundraisingEvent =
                 fundraisingEventService.getFundraisingEvent(fundraiserEventId);
         collectionBox.setFundraisingEvent(fundraisingEvent);
@@ -78,9 +81,13 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
     }
 
     @Override
-    public void addMoneyToCollectionBox(
+    public CollectionBox addMoneyToCollectionBox(
             UUID collectionBoxId, AddMoneyRequestDto addMoneyRequestDto) {
         CollectionBox collectionBox = getCollectionBox(collectionBoxId);
+        if (collectionBox.getFundraisingEvent() == null) {
+            throw new BusinessException(
+                    BusinessExceptionReason.BOX_NOT_CONNECTED_WITH_FUNDRAISER_EVENT);
+        }
         Optional<DonationCurrency> donationCurrency =
                 collectionBox.getDonations().stream()
                         .filter(
@@ -93,15 +100,17 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
                         .findFirst();
         if (donationCurrency.isPresent()) {
             donationCurrency.get().addMoney(addMoneyRequestDto.amount());
+            donationCurrencyRepository.save(donationCurrency.get());
         } else {
             throw new BusinessException(
                     BusinessExceptionReason.DONATION_CURRENCY_NOT_ASSOCIATED_WITH_BOX);
         }
+        return collectionBoxRepository.save(collectionBox);
     }
 
     @Transactional
     @Override
-    public void transferMoneyFromCollectionBox(UUID collectionBoxId) {
+    public CollectionBox transferMoneyFromCollectionBox(UUID collectionBoxId) {
         CollectionBox collectionBox = getCollectionBox(collectionBoxId);
         FundraisingEvent fundraisingEvent = collectionBox.getFundraisingEvent();
         if (fundraisingEvent == null) {
@@ -125,6 +134,7 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
 
         fundraisingEvent.addMoney(sumOfDonations);
         collectionBox.getDonations().forEach(donation -> donation.setAmount(BigDecimal.ZERO));
+        return collectionBoxRepository.save(collectionBox);
     }
 
     private CollectionBox getCollectionBox(UUID collectionBoxId) {

@@ -1,7 +1,9 @@
 package com.example.lat.features.collectionbox.model;
 
 import com.example.lat.features.fundraisingevent.model.FundraisingEvent;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,7 +27,8 @@ public class CollectionBox {
 
     @ManyToOne private FundraisingEvent fundraisingEvent;
 
-    @OneToMany private List<DonationCurrency> donations = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<DonationCurrency> donations = new ArrayList<>();
 
     public void addCurrencyDonation(DonationCurrency savedDonationCurrency) {
         this.donations.add(savedDonationCurrency);

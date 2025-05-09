@@ -17,6 +17,11 @@ public enum BusinessExceptionReason implements BusinessExceptionPolicy {
     BOX_NOT_CONNECTED_WITH_FUNDRAISER_EVENT(
             "Box is not connected with fundraiser event", HttpStatus.BAD_REQUEST, null),
     RATES_NOT_FOUND("Could not find rates", HttpStatus.NOT_FOUND, null),
+    COLLECTION_BOX_ALREADY_ASSIGNED(
+            "Collection box already assigned to fundraising event, try to unassign collection box"
+                    + " first",
+            HttpStatus.CONFLICT,
+            null),
     ;
 
     private final String code = name();

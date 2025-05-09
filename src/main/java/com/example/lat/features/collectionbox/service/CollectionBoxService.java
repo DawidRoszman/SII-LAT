@@ -17,7 +17,8 @@ public interface CollectionBoxService {
 
     CollectionBox assingCollectionBox(UUID collectionBoxId, UUID fundraiserEventId);
 
-    void addMoneyToCollectionBox(UUID collectionBoxId, AddMoneyRequestDto addMoneyRequestDto);
+    CollectionBox addMoneyToCollectionBox(
+            UUID collectionBoxId, AddMoneyRequestDto addMoneyRequestDto);
 
-    void transferMoneyFromCollectionBox(UUID collectionBoxId);
+    CollectionBox transferMoneyFromCollectionBox(UUID collectionBoxId);
 }

@@ -10,6 +10,9 @@ public record FundraisingEventResponseDto(
         UUID id, String name, BigDecimal accountAmount, Currency accountCurrency)
         implements Serializable {
     public static FundraisingEventResponseDto from(FundraisingEvent fundraisingEvent) {
+        if (fundraisingEvent == null) {
+            return null;
+        }
         return new FundraisingEventResponseDto(
                 fundraisingEvent.getId(),
                 fundraisingEvent.getName(),

@@ -13,10 +13,10 @@ public class CurrencyConverter {
     private final Map<Currency, BigDecimal> rates = new HashMap<>();
 
     public CurrencyConverter() {
-        rates.put(AllowedCurrency.GBP.getCurrency(), BigDecimal.valueOf(1.4));
+        rates.put(AllowedCurrency.GBP.getCurrency(), BigDecimal.valueOf(0.75));
         rates.put(AllowedCurrency.USD.getCurrency(), BigDecimal.valueOf(1.0));
-        rates.put(AllowedCurrency.PLN.getCurrency(), BigDecimal.valueOf(0.7));
-        rates.put(AllowedCurrency.EUR.getCurrency(), BigDecimal.valueOf(1.1));
+        rates.put(AllowedCurrency.PLN.getCurrency(), BigDecimal.valueOf(3.77));
+        rates.put(AllowedCurrency.EUR.getCurrency(), BigDecimal.valueOf(0.89));
     }
 
     public BigDecimal convert(Currency from, Currency to, BigDecimal amount) {
@@ -25,6 +25,7 @@ public class CurrencyConverter {
         }
 
         BigDecimal amountInUSD = amount.divide(rates.get(from), 4, RoundingMode.HALF_UP);
-        return amountInUSD.multiply(rates.get(to));
+        BigDecimal result = amountInUSD.multiply(rates.get(to));
+        return result.setScale(2, RoundingMode.HALF_UP);
     }
 }

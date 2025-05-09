@@ -23,6 +23,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -206,6 +207,12 @@ public class GlobalApiExceptionHandler extends ResponseEntityExceptionHandler {
                         singletonList(missingParameterDto));
 
         return ResponseEntity.status(code.getHttpStatus()).body(errorResponseDto);
+    }
+
+    @ExceptionHandler({InvalidDataAccessApiUsageException.class})
+    public ResponseEntity<Object> handleInvalidDataAccessApiUsageException(
+            InvalidDataAccessApiUsageException exception, final ServletWebRequest request) {
+        return handleStandardException(exception, ErrorCode.BAD_REQUEST);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
