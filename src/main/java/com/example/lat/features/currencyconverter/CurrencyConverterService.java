@@ -43,7 +43,6 @@ public class CurrencyConverterService {
         }
 
         currencyConverter = new Gson().fromJson(response.body(), CurrencyConverter.class);
-        log.info("Fetched rates");
-        log.info(currencyConverter.getRates().toString());
+        log.info("Successfully fetched rates");
     }
 }

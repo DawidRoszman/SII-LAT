@@ -1,6 +1,7 @@
 package com.example.lat.features.collectionbox.dto;
 
 import com.example.lat.features.collectionbox.model.CollectionBox;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CollectionBoxSummaryResponseDto(UUID id, Boolean isAssigned, Boolean isEmpty) {
@@ -10,13 +11,6 @@ public record CollectionBoxSummaryResponseDto(UUID id, Boolean isAssigned, Boole
                 collectionBox.getFundraisingEvent() != null,
                 collectionBox.getDonations().stream()
                         .allMatch(
-                                donation ->
-                                        donation.getAmount()
-                                                        .compareTo(
-                                                                collectionBox
-                                                                        .getDonations()
-                                                                        .getFirst()
-                                                                        .getAmount())
-                                                == 0));
+                                donation -> donation.getAmount().compareTo(BigDecimal.ZERO) == 0));
     }
 }
