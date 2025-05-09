@@ -6,6 +6,7 @@ import com.example.lat.features.fundraisingevent.model.FundraisingEvent;
 import com.example.lat.features.fundraisingevent.service.FundraisingEventService;
 import com.example.lat.shared.dto.ResponseDto;
 import com.example.lat.shared.enums.SuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ public class FundraisingEventController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("create")
     public ResponseDto<FundraisingEventResponseDto> createFundraisingEvent(
-            @RequestBody FundraisingEventCreateRequestDto fundraisingEventCreateRequestDto) {
+            @RequestBody @Valid FundraisingEventCreateRequestDto fundraisingEventCreateRequestDto) {
         FundraisingEvent fundraisingEvent =
                 fundraisingEventService.createFundraisingEvent(fundraisingEventCreateRequestDto);
         FundraisingEventResponseDto fundraisingEventResponseDto =

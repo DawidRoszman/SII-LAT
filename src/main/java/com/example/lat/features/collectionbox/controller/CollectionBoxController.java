@@ -8,6 +8,7 @@ import com.example.lat.features.collectionbox.model.CollectionBox;
 import com.example.lat.features.collectionbox.service.CollectionBoxService;
 import com.example.lat.shared.dto.ResponseDto;
 import com.example.lat.shared.enums.SuccessCode;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -34,7 +35,7 @@ public class CollectionBoxController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("register")
     public ResponseDto<CollectionBoxResponseDto> register(
-            @RequestBody CollectionBoxCreateRequestDto collectionBoxCreateRequestDto) {
+            @RequestBody @Valid CollectionBoxCreateRequestDto collectionBoxCreateRequestDto) {
         CollectionBox collectionBox =
                 collectionBoxService.registerCollectionBox(collectionBoxCreateRequestDto);
         return new ResponseDto<>(
@@ -72,7 +73,7 @@ public class CollectionBoxController {
 
     @PatchMapping("{id}/donate")
     public ResponseDto<CollectionBoxResponseDto> donate(
-            @PathVariable UUID id, @RequestBody AddMoneyRequestDto addMoneyRequestDto) {
+            @PathVariable UUID id, @RequestBody @Valid AddMoneyRequestDto addMoneyRequestDto) {
         CollectionBox collectionBox =
                 collectionBoxService.addMoneyToCollectionBox(id, addMoneyRequestDto);
 
