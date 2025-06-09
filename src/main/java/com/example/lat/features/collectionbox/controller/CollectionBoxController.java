@@ -64,7 +64,7 @@ public class CollectionBoxController {
     public ResponseDto<CollectionBoxResponseDto> assignFundraisingEvent(
             @PathVariable UUID collectionBoxId, @PathVariable UUID fundraisingEventId) {
         CollectionBox collectionBox =
-                collectionBoxService.assingCollectionBox(collectionBoxId, fundraisingEventId);
+                collectionBoxService.assignCollectionBox(collectionBoxId, fundraisingEventId);
         return new ResponseDto<>(
                 SuccessCode.RESOURCE_UPDATED,
                 "Successfully assigned fundraising event to collection box",

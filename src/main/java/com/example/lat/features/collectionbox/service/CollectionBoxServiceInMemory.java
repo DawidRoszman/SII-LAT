@@ -70,7 +70,7 @@ public class CollectionBoxServiceInMemory implements CollectionBoxService {
 
     @Override
     @Transactional
-    public CollectionBox assingCollectionBox(UUID collectionBoxId, UUID fundraiserEventId) {
+    public CollectionBox assignCollectionBox(UUID collectionBoxId, UUID fundraiserEventId) {
         CollectionBox collectionBox = getCollectionBox(collectionBoxId);
         if (collectionBox.getFundraisingEvent() != null) {
             throw new BusinessException(BusinessExceptionReason.COLLECTION_BOX_ALREADY_ASSIGNED);
